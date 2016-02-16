@@ -6,9 +6,16 @@ rawk_find_awk = function()
 rawk = function(code = '{print $1}')
 {
   call = paste(rawk_find_awk(),sprintf(" -e '%s'", code), " %s")
-  return(call)
+
+  call
+
+  function(file)
+  {
+    system(sprintf(call, file), intern = TRUE)
+  }
 }
 
+rawk_first_column = rawk()
 
 
 #a = system(path, intern = TRUE)
