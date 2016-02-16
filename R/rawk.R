@@ -8,11 +8,11 @@ rawk = function(code = '{print $1}')
 {
   call = paste(sprintf(" -e '%s'", code), " %s")
 
-  function(file)
+  function(file, stdout = "", ...)
   {
     fileName = tools::file_path_as_absolute(file)
     args = sprintf(call, fileName)
-    system2(rawk_find_awk(), args = args)
+    system2(rawk_find_awk(), args = args, stdout = stdout, ...)
   }
 }
 
