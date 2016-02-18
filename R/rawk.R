@@ -1,7 +1,6 @@
 rawk_find_awk = function()
 {
-  path = 'C:/Rtools/bin/gawk.exe'
-  path
+  Sys.which("gawk.exe")
 }
 
 rawk = function(code = '{print $1}')
@@ -25,7 +24,7 @@ rawk_first_column = rawk()
 #file = "R/rawk.R"
 #
 #system(sprintf(call, fileName), intern = TRUE)
-
+#rawk_first_column("DESCRIPTION")
 
 
 
