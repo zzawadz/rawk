@@ -1,6 +1,17 @@
-rawk_find_awk = function()
+rawk_find_awk = function() 
 {
-  Sys.which("gawk.exe")
+  path = Sys.which("gawk.exe")
+  if(path == "")
+  {
+    path = "C:\\Rtools\\bin\\gawk.exe"
+    if(!file.exists(path))
+    {
+      stop("rawk is unable to find awk!")
+    }
+  }
+  
+  return(path)
+  
 }
 
 rawk = function(code = '{print $1}')
