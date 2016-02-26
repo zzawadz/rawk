@@ -26,9 +26,23 @@ rawk_get_awk_path = function()
   return(rawkPath)
 }
 
-rawk_set_awk_path = function(path)
+rawk_set_awk_path = function(path, test = FALSE)
 {
   options("rawk.awk.path" = path)
+
+
+  if(test)
+  {
+    filePath = file.path(path.package("rawk"), "DESCRIPTION")
+
+    test_fnc = rawk('{print $0; exit;}')
+
+    if(test_fnc(filePath, stdout = TRUE) != "Package: rawk")
+    {
+      stop(sprintf("There is no awk in %s", path))
+    }
+  }
+
   return(invisible())
 }
 
