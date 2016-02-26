@@ -1,19 +1,3 @@
-rawk_find_awk = function() 
-{
-  path = Sys.which("gawk.exe")
-  if(path == "")
-  {
-    path = "C:\\Rtools\\bin\\gawk.exe"
-    if(!file.exists(path))
-    {
-      stop("rawk is unable to find awk!")
-    }
-  }
-  
-  return(path)
-  
-}
-
 rawk = function(code = '{print $1}')
 {
   callCode = paste(sprintf(" -e '%s'", code), " %s")
@@ -22,7 +6,7 @@ rawk = function(code = '{print $1}')
   {
     fileName = tools::file_path_as_absolute(file)
     args = sprintf(callCode, fileName)
-    system2(rawk_find_awk(), args = args, stdout = stdout, ...)
+    system2(rawk_get_awk_path(), args = args, stdout = stdout, ...)
   }
 }
 
@@ -36,7 +20,7 @@ rawk_pkg = function(script, pkgName)
   {
     fileName = tools::file_path_as_absolute(file)
     args = sprintf(callCode, fileName)
-    system2(rawk_find_awk(), args = args, stdout = stdout, ...)
+    system2(rawk_get_awk_path(), args = args, stdout = stdout, ...)
   }
 }
 
