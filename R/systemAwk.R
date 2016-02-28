@@ -1,13 +1,26 @@
 rawk_find_awk = function()
 {
-  path = Sys.which("gawk.exe")
-  if(path == "")
+  if(Sys.info()["sysname"] == "Linux")
   {
-    path = "C:\\Rtools\\bin\\gawk.exe"
-    if(!file.exists(path))
+    path = Sys.which("awk")
+    if(path == "")
     {
-      warning("rawk is unable to find awk! Please use rawk_set_awk_path.")
-      return(NA)
+        warning("rawk is unable to find awk! Please use rawk_set_awk_path.")
+        return(NA)
+    }
+
+  } else
+  {
+    path = Sys.which("gawk.exe")
+
+    if(path == "")
+    {
+      path = "C:\\Rtools\\bin\\gawk.exe"
+      if(!file.exists(path))
+      {
+        warning("rawk is unable to find awk! Please use rawk_set_awk_path.")
+        return(NA)
+      }
     }
   }
 
