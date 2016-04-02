@@ -17,18 +17,21 @@ file_modification_time_cache = function(fnc)
   fncName = force(as.character(match.call()$fnc))
 
   cache = .cache_function
+
   body = as.list(cache)[[2]]
 
   paramsList = c(head(as.list(fnc), -1))
-  cache = as.function(c(paramsList, body))
+  cache = as.function(c(paramsList, .CACHE_VERBOSE = TRUE, body))
   cache
 
 }
 
-.cache_function = function(..., .CACHE_VERBOSE = TRUE)
+.cache_function = function(...)
 {
   allParams = as.list(match.call())[-1]
-  file = allParams[[1]]
+
+  .CACHE_VERBOSE = tail(allParams,1)[[1]]
+  allParams = head(allParams, -1)
 
   cacheDir = file.path(getwd(), ".cache", fncName)
 
