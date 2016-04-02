@@ -1,0 +1,49 @@
+---
+title: "README"
+author: "Zygmunt Zawadzki"
+date: "2 kwietnia 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+rawk
+===================
+
+
+
+# Caching results:
+
+```{r fileCache, cache=TRUE}
+library(rawk)
+set.seed(123)
+
+file_function = function(file)
+{
+  n = as.numeric(readLines(file))
+  rnorm(n)
+}
+
+
+tmpFile = tempfile()
+cat("5\n", file = tmpFile)
+
+file_function(tmpFile)
+
+## Not match
+all(file_function(tmpFile) == file_function(tmpFile))
+
+cache_function = file_modification_time_cache(file_function)
+cache_function(tmpFile)
+
+all.equal(cache_function(tmpFile, .CACHE_VERBOSE = FALSE),
+          cache_function(tmpFile, .CACHE_VERBOSE = FALSE))
+
+x = cache_function(tmpFile, .CACHE_VERBOSE = FALSE)
+cat("5\n", file = tmpFile)
+all.equal(x,
+          cache_function(tmpFile, .CACHE_VERBOSE = FALSE))
+
+```
