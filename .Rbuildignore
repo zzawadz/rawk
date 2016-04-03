@@ -1,2 +1,5 @@
 ^.*\.Rproj$
+^.*\.cache$
 ^\.Rproj\.user$
+README.Rmd
+cache$
