@@ -51,7 +51,7 @@ cache_function(tmpFile)
 ```
 
 ```
-## Error in readLines(file): argument "file" is missing, with no default
+## [1]  1.7869131  0.4978505 -1.9666172  0.7013559 -0.4727914
 ```
 
 ```r
@@ -71,5 +71,5 @@ all.equal(x,
 ```
 
 ```
-## [1] TRUE
+## [1] "Mean relative difference: 1.123148"
 ```

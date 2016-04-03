@@ -16,7 +16,7 @@ rawk
 
 # Caching results:
 
-```{r fileCache, cache=TRUE}
+```{r fileCache, cache=TRUE, message=FALSE}
 library(rawk)
 set.seed(123)
 
