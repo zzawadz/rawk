@@ -42,7 +42,8 @@ file_modification_time_cache = function(fnc)
     .CACHE_VERBOSE = TRUE
   }
 
-  file = eval(allParams[[1]])
+  file = eval(allParams[[1]], parent.frame())
+  allParams = lapply(allParams, eval, parent.frame())
 
   cacheDir = file.path(getwd(), ".cache", fncName)
 
