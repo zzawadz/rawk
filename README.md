@@ -46,6 +46,7 @@ all(file_function(tmpFile) == file_function(tmpFile))
 ```
 
 ```r
+# Cache function usage:
 cache_function = file_modification_time_cache(file_function)
 cache_function(tmpFile)
 ```
@@ -55,6 +56,8 @@ cache_function(tmpFile)
 ```
 
 ```r
+# fnc result is read from cached file, so in every 
+# cache_function call random data will be the same
 all.equal(cache_function(tmpFile, .CACHE_VERBOSE = FALSE),
           cache_function(tmpFile, .CACHE_VERBOSE = FALSE))
 ```
@@ -64,6 +67,7 @@ all.equal(cache_function(tmpFile, .CACHE_VERBOSE = FALSE),
 ```
 
 ```r
+# file changed:
 x = cache_function(tmpFile, .CACHE_VERBOSE = FALSE)
 cat("5\n", file = tmpFile)
 all.equal(x,

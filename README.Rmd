@@ -35,12 +35,16 @@ file_function(tmpFile)
 ## Not match
 all(file_function(tmpFile) == file_function(tmpFile))
 
+# Cache function usage:
 cache_function = file_modification_time_cache(file_function)
 cache_function(tmpFile)
 
+# fnc result is read from cached file, so in every 
+# cache_function call random data will be the same
 all.equal(cache_function(tmpFile, .CACHE_VERBOSE = FALSE),
           cache_function(tmpFile, .CACHE_VERBOSE = FALSE))
 
+# file changed:
 x = cache_function(tmpFile, .CACHE_VERBOSE = FALSE)
 cat("5\n", file = tmpFile)
 all.equal(x,
