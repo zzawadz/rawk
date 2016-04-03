@@ -1,8 +1,25 @@
+
+
+#' Simple sed imitation.
+#'
+#' This function tries to imitate sed (stream editor), especially \code{s/foo/bar/g} syntax.
+#'
+#' @param x character vector
+#' @param query sed query.
+#' @param ... other parameters passed to stringi functions.
+#'
+#' @return Character vector.
+#'
+#' @export
+#' @importFrom stringi stri_split_fixed stri_replace_first_regex stri_replace_first_regex
+#' @examples
+#'
+#' query = "s/foo/bar/g"
+#' x = "foobar"
+#' sed(x, query)
+#'
 sed = function(x, query, ...)
 {
-  #query = "s/foo/bar/g"
-  #x = "foobar"
-
   qs = strsplit(query, split = "")[[1]]
   sep =  qs[2]
 
