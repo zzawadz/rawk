@@ -43,7 +43,6 @@ file_modification_time_cache = function(fnc)
   }
 
   file = eval(allParams[[1]])
-  print(file)
 
   cacheDir = file.path(getwd(), ".cache", fncName)
 
