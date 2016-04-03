@@ -21,9 +21,8 @@ file_modification_time_cache = function(fnc)
   body = as.list(cache)[[2]]
 
   paramsList = c(head(as.list(fnc), -1))
-  cache = as.function(c(paramsList, .CACHE_VERBOSE = TRUE, body))
+  cache = as.function(c(paramsList, .CACHE_VERBOSE = TRUE, .FORCE_RECALC = FALSE, body))
   cache
-
 }
 
 .cache_function = function(...)
@@ -41,6 +40,18 @@ file_modification_time_cache = function(fnc)
   {
     .CACHE_VERBOSE = TRUE
   }
+
+  if(any(names(allParams) == ".FORCE_RECALC"))
+  {
+    idx = which(names(allParams) == ".FORCE_RECALC")
+    .FORCE_RECALC = allParams[[idx]]
+    allParams = allParams[-idx]
+
+  } else
+  {
+    .FORCE_RECALC = FALSE
+  }
+
 
   file = eval(allParams[[1]], parent.frame())
   allParams = lapply(allParams, eval, parent.frame())
@@ -60,7 +71,7 @@ file_modification_time_cache = function(fnc)
 
   cacheFile = file.path(cacheDir, hash)
 
-  if(file.exists(cacheFile))
+  if(file.exists(cacheFile) && !.FORCE_RECALC)
   {
     if(.CACHE_VERBOSE)
     {
