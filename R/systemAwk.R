@@ -1,3 +1,21 @@
+
+
+#' Find awk installation.
+#'
+#' This function is used for finding awk inplementation in the system.
+#'
+#' @return
+#'
+#' Returns path to awk.
+#'
+#' On Windows tries to use Sys.which("awk"), or Rtools gawk.
+#'
+#' If it is unable to find rawk, returns NA.
+#' @export
+#' @examples
+#'
+#' rawk_find_awk()
+#'
 rawk_find_awk = function()
 {
   if(Sys.info()["sysname"] == "Linux")
@@ -27,6 +45,19 @@ rawk_find_awk = function()
   return(path)
 }
 
+#' Return path to awk
+#'
+#' Return path to awk.
+#'
+#' @return
+#'
+#' Returns path to awk. If it cannot find any awk, throws an error.
+#'
+#' @export
+#' @examples
+#'
+#' rawk_get_awk_path()
+#'
 rawk_get_awk_path = function()
 {
   rawkPath = getOption("rawk.awk.path")
@@ -39,6 +70,21 @@ rawk_get_awk_path = function()
   return(rawkPath)
 }
 
+
+#' Set path to awk
+#'
+#' Set path to awk for rawk calls.
+#'
+#' @param path system path to awk implementations.
+#' @param test if true, use simple test to determine if \code{path} is valid awk implementation.
+#'
+#' @return Returns invisible \code{path}.
+#'
+#' @export
+#' @examples
+#'
+#' rawk_set_awk_path(rawk_get_awk_path(), test = TRUE)
+#'
 rawk_set_awk_path = function(path, test = FALSE)
 {
   options("rawk.awk.path" = path)
@@ -56,7 +102,7 @@ rawk_set_awk_path = function(path, test = FALSE)
     }
   }
 
-  return(invisible())
+  return(invisible(path))
 }
 
 

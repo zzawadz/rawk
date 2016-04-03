@@ -2,4 +2,7 @@
 
 export(file_modification_time_cache)
 export(rawk)
+export(rawk_find_awk)
+export(rawk_get_awk_path)
+export(rawk_set_awk_path)
 importFrom(digest,digest)
