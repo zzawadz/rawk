@@ -30,8 +30,20 @@ file_modification_time_cache = function(fnc)
 {
   allParams = as.list(match.call())[-1]
 
-  .CACHE_VERBOSE = tail(allParams,1)[[1]]
-  allParams = head(allParams, -1)
+
+  if(any(names(allParams) == ".CACHE_VERBOSE"))
+  {
+    idx = which(names(allParams) == ".CACHE_VERBOSE")
+    .CACHE_VERBOSE = allParams[[idx]]
+    allParams = allParams[-idx]
+
+  } else
+  {
+    .CACHE_VERBOSE = TRUE
+  }
+
+  file = eval(allParams[[1]])
+  print(file)
 
   cacheDir = file.path(getwd(), ".cache", fncName)
 
