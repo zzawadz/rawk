@@ -1,9 +1,3 @@
----
-title: "README"
-author: "Zygmunt Zawadzki"
-date: "2 kwietnia 2016"
-output: html_document
----
 
 
 
@@ -12,7 +6,7 @@ rawk
 
 
 
-# Caching results:
+### Caching results:
 
 
 ```r
@@ -69,7 +63,7 @@ all.equal(cache_function(tmpFile, .CACHE_VERBOSE = FALSE),
 ```r
 # file changed:
 x = cache_function(tmpFile, .CACHE_VERBOSE = FALSE)
-cat("5\n", file = tmpFile)
+cat("5.0\n", file = tmpFile)
 all.equal(x,
           cache_function(tmpFile, .CACHE_VERBOSE = FALSE))
 ```
