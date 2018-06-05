@@ -16,7 +16,33 @@ Return new function with caching functionality
 Create function which cache result based on file. If file will be changed, function will also be recalculated, otherwise cached value will be returned
 }
 \examples{
-# ADD EXAMPLES HERE
 
+fnc <- function(file) {
+   n <- as.numeric(readLines(file, warn = FALSE))
+   rnorm(n)
 }
 
+file <- tempfile()
+cat(5, file = file)
+all.equal(fnc(file), fnc(file))
+
+fcached <- file_modification_time_cache(fnc)
+
+all.equal(fcached(file), fcached(file))
+
+x <- fcached(file)
+
+cat(5, file = file)
+y <- fcached(file)
+all.equal(x, y)
+
+fnc2 <- function(file, k = 2) {
+   n <- as.numeric(readLines(file, warn = FALSE))
+   rnorm(n * k)
+}
+
+fcached2 <- file_modification_time_cache(fnc2)
+all.equal(fcached2(file,1), fcached2(file,1))
+all.equal(fcached2(file,1), fcached2(file,2))
+
+}

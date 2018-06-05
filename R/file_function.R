@@ -1,15 +1,42 @@
 #' Create function for operating on disk files with caching
 #'
-#' Create function which cache result based on file. If file will be changed, function will also be recalculated, otherwise cached value will be returned
+#' Create function which cache result based on file. If file will be changed, function will also be recalculated, otherwise cached value will be returned.
 #'
-#' @param fnc function that operates on file (first argument must be path to file).
+#' @param fnc function that operates on file (first argument must be path to the file).
 #'
 #' @return Return new function with caching functionality
 #'
 #' @export
 #' @importFrom digest digest
 #' @examples
-#' # ADD EXAMPLES HERE
+#'
+#' fnc <- function(file) {
+#'    n <- as.numeric(readLines(file, warn = FALSE))
+#'    rnorm(n)
+#' }
+#'
+#' file <- tempfile()
+#' cat(5, file = file)
+#' all.equal(fnc(file), fnc(file))
+#'
+#' fcached <- file_modification_time_cache(fnc)
+#'
+#' all.equal(fcached(file), fcached(file))
+#'
+#' x <- fcached(file)
+#'
+#' cat(5, file = file)
+#' y <- fcached(file)
+#' all.equal(x, y)
+#'
+#' fnc2 <- function(file, k = 2) {
+#'    n <- as.numeric(readLines(file, warn = FALSE))
+#'    rnorm(n * k)
+#' }
+#'
+#' fcached2 <- file_modification_time_cache(fnc2)
+#' all.equal(fcached2(file,1), fcached2(file,1))
+#' all.equal(fcached2(file,1), fcached2(file,2))
 #'
 file_modification_time_cache = function(fnc)
 {
@@ -20,8 +47,11 @@ file_modification_time_cache = function(fnc)
 
   body = as.list(cache)[[2]]
 
+  cacheDir = file.path(getwd(), ".cache", fncName)
+
   paramsList = c(head(as.list(fnc), -1))
   cache = as.function(c(paramsList, .CACHE_VERBOSE = TRUE, .FORCE_RECALC = FALSE, body))
+  class(cache) <- c("FileCacheFunction", class(cache))
   cache
 }
 
@@ -52,16 +82,13 @@ file_modification_time_cache = function(fnc)
     .FORCE_RECALC = FALSE
   }
 
+  if(!dir.exists(cacheDir)) {
+    dir.create(cacheDir, recursive = TRUE)
+  }
+
 
   file = eval(allParams[[1]], parent.frame())
   allParams = lapply(allParams, eval, parent.frame())
-
-  cacheDir = file.path(getwd(), ".cache", fncName)
-
-  if(!dir.exists(cacheDir))
-  {
-    dir.create(cacheDir, recursive = TRUE)
-  }
 
   modTime = file.mtime(file)
   allParamsToHash = allParams
@@ -89,4 +116,15 @@ file_modification_time_cache = function(fnc)
   }
 
   return(value)
+}
+
+
+#' @S3method print FileCacheFunction
+print.FileCacheFunction <- function(x, ...) {
+
+  cat("Function with cache based on file modification\n")
+  cat("\nCache directory: ", environment(x)$cacheDir)
+  cat("\nTo force recalculation please use .FORCE_RECALC = TRUE")
+  cat("\n\nOriginal function:\n")
+  print(environment(x)$fnc)
 }
