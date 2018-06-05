@@ -122,7 +122,7 @@ file_modification_time_cache = function(fnc)
 #' @S3method print FileCacheFunction
 print.FileCacheFunction <- function(x, ...) {
 
-  cat("Function with cache based on file modification\n")
+  cat("Function with a cache based on the file modification time\n")
   cat("\nCache directory: ", environment(x)$cacheDir)
   cat("\nTo force recalculation please use .FORCE_RECALC = TRUE")
   cat("\n\nOriginal function:\n")
